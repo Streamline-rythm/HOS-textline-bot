@@ -10,7 +10,6 @@ load_dotenv()
 
 access_token = os.getenv('access_token')
 base_url = os.getenv('base_url')
-port = os.getenv('port')
 
 if not access_token or not base_url:
     raise ValueError("access token is not loaded")
@@ -32,7 +31,7 @@ async def get_replied_message(
     url = f"{base_url}?after_uuid={after_uuid}&group_uuid={group_uuid}&page={page}&page_size={page_size}&phone_number={phone_number}&access_token={access_token}"
     print(f"get_request_url = {url}")
 
-    for i in range(2):
+    for i in range(10):
         print(f"{i}th loop")
         respond = requests.get(url)
         data = respond.json() 
@@ -53,9 +52,4 @@ async def test():
     return {"result": "success"}
 
 if __name__ == "__main__":
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0",
-        port=port,
-        reload=True
-    )
+    uvicorn.run(app, host="0.0.0.0", port=8080, proxy_headers=True)
