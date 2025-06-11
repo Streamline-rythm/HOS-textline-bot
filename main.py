@@ -48,6 +48,10 @@ async def get_replied_message(
             "data": "not image"
         }
 
+@app.get("/test")
+async def test():
+    return {"result": "success"}
+
 if __name__ == "__main__":
     uvicorn.run(
         "main:app",
