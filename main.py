@@ -31,7 +31,7 @@ async def get_replied_message(
     url = f"{base_url}?after_uuid={after_uuid}&group_uuid={group_uuid}&page={page}&page_size={page_size}&phone_number={phone_number}&access_token={access_token}"
     print(f"get_request_url = {url}")
 
-    for i in range(10):
+    for i in range(30):
         print(f"{i}th loop")
         respond = requests.get(url)
         data = respond.json() 
