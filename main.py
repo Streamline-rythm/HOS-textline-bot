@@ -27,19 +27,18 @@ async def get_replied_img(
     page: int = Query(..., description="first page of conversation"),
     page_size: int = Query(..., description="number of returned latest replied message"),
     phone_number: str = Query(..., description="The phone number of client"),
-    loop_number: int = Query(..., description="this is loop number for searching")
 ):
     url = f"{base_url}?after_uuid={after_uuid}&group_uuid={group_uuid}&page={page}&page_size={page_size}&phone_number={phone_number}&access_token={access_token}"
     print(f"get_request_url = {url}")
 
-    for i in range(loop_number):
+    for i in range(30):
         print(f"{i}th loop")
         respond = requests.get(url)
         data = respond.json() 
         posts = data.get("posts")
 
         for post in posts:
-            if len(post["attachments"]):
+            if post["attachments"]:
                 return post
         
         await asyncio.sleep(10)
@@ -56,22 +55,22 @@ async def get_replied_message(
     page: int = Query(..., description="first page of conversation"),
     page_size: int = Query(..., description="number of returned latest replied message"),
     phone_number: str = Query(..., description="The phone number of client"),
-    loop_number: int = Query(..., description="this is loop number for searching")
 ):
     url = f"{base_url}?after_uuid={after_uuid}&group_uuid={group_uuid}&page={page}&page_size={page_size}&phone_number={phone_number}&access_token={access_token}"
     print(f"get_request_url = {url}")
 
-    for i in range(loop_number):
+    for i in range(30):
         print(f"{i}th loop")
         respond = requests.get(url)
         data = respond.json() 
         posts = data.get("posts")
 
         if posts:
-            return posts
+            post = posts[0]
+            if not post["attachments"]
+                return post
         
         await asyncio.sleep(10)
-    
     
     return {
             "data": "not message"
