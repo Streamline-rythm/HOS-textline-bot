@@ -36,8 +36,9 @@ async def get_replied_message(
         respond = requests.get(url)
         data = respond.json() 
         posts = data.get("posts")
+        post = posts[0]
 
-        if posts:
+        if len(post["attachments"]):
             return posts
         
         await asyncio.sleep(10)
