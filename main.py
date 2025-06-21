@@ -47,7 +47,6 @@ async def get_replied_img(
             "data": "not image"
         }
 
-
 @app.get("/get_replied_message")
 async def get_replied_message(
     after_uuid: str = Query(..., description="The uuid of parent message"),
