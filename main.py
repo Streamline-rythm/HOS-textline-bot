@@ -20,18 +20,19 @@ app = FastAPI(
     version = "1.0.0",
 )
 
-@app.get("/get_replied_message")
-async def get_replied_message(
+@app.get("/get_replied_img")
+async def get_replied_img(
     after_uuid: str = Query(..., description="The uuid of parent message"),
     group_uuid: str = Query(..., description="The uuid of group"),
     page: int = Query(..., description="first page of conversation"),
     page_size: int = Query(..., description="number of returned latest replied message"),
-    phone_number: str = Query(..., description="The phone number of client")
+    phone_number: str = Query(..., description="The phone number of client"),
+    loop_number: int = Query(..., description="this is loop number for searching")
 ):
     url = f"{base_url}?after_uuid={after_uuid}&group_uuid={group_uuid}&page={page}&page_size={page_size}&phone_number={phone_number}&access_token={access_token}"
     print(f"get_request_url = {url}")
 
-    for i in range(30):
+    for i in range(loop_number):
         print(f"{i}th loop")
         respond = requests.get(url)
         data = respond.json() 
@@ -43,9 +44,37 @@ async def get_replied_message(
         
         await asyncio.sleep(10)
     
-    if not posts:
-        return {
+    return {
             "data": "not image"
+        }
+
+
+@app.get("/get_replied_message")
+async def get_replied_message(
+    after_uuid: str = Query(..., description="The uuid of parent message"),
+    group_uuid: str = Query(..., description="The uuid of group"),
+    page: int = Query(..., description="first page of conversation"),
+    page_size: int = Query(..., description="number of returned latest replied message"),
+    phone_number: str = Query(..., description="The phone number of client"),
+    loop_number: int = Query(..., description="this is loop number for searching")
+):
+    url = f"{base_url}?after_uuid={after_uuid}&group_uuid={group_uuid}&page={page}&page_size={page_size}&phone_number={phone_number}&access_token={access_token}"
+    print(f"get_request_url = {url}")
+
+    for i in range(loop_number):
+        print(f"{i}th loop")
+        respond = requests.get(url)
+        data = respond.json() 
+        posts = data.get("posts")
+
+        if posts:
+            return posts
+        
+        await asyncio.sleep(10)
+    
+    
+    return {
+            "data": "not message"
         }
 
 @app.get("/test")
