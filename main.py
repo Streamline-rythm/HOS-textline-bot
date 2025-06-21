@@ -44,7 +44,7 @@ async def get_replied_img(
         await asyncio.sleep(10)
     
     return {
-            "data": "not image"
+        "data": "not image"
         }
 
 @app.get("/get_replied_message")
@@ -66,13 +66,13 @@ async def get_replied_message(
 
         if posts:
             post = posts[0]
-            if not post["attachments"]
+            if not post["attachments"]:
                 return post
         
         await asyncio.sleep(10)
     
     return {
-            "data": "not message"
+        "data": "not message"
         }
 
 @app.get("/test")
